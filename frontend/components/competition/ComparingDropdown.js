@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { ArrowDown2 } from 'iconsax-react-native'
 
@@ -26,14 +26,12 @@ export default function ComparingDropdown() {
                 inputSearchStyle={styles.search_text}
                 containerStyle={styles.drop_ctnr}
                 iconStyle={styles.iconStyle}
-
                 showsVerticalScrollIndicator={false}
                 data={data}
                 search
                 maxHeight={250}
                 labelField="label"
                 valueField="value"
-                // placeholder='Total Volume'
                 searchPlaceholder="Search..."
                 value={value}
                 onFocus={() => setIsFocus(true)}
@@ -49,15 +47,6 @@ export default function ComparingDropdown() {
                     return (
                         <View style={styles.item}>
                             <Text style={styles.item_text}>{item.label}</Text>
-                            {item.value === value && (
-                                <></>
-                                // <AntDesign
-                                //     style={styles.icon}
-                                //     color="black"
-                                //     name="Safety"
-                                //     size={20}
-                                // />
-                            )}
                         </View>
                     )
                 }}
@@ -82,9 +71,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#fff',
         width: 185,
-
         shadowColor: '#000',
-        shadowOffset: { width: -3, height: 4 },
+        shadowOffset: { width: -4, height: 5 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
     },
@@ -94,8 +82,7 @@ const styles = StyleSheet.create({
     },
     item_text: {
         fontSize: 15,
-        fontWeight: '600'
-        // fontFamily: 'Inter_600SemiBold',
+        fontFamily: 'Mulish_600SemiBold',
     },
     icon: {
         marginRight: 5,
@@ -113,8 +100,7 @@ const styles = StyleSheet.create({
     search_text: {
         height: 32,
         paddingBottom: 2,
-        fontWeight: '500',
-        // fontFamily: 'Inter_600SemiBold',
+        fontFamily: 'Mulish_600SemiBold',
         fontSize: 16,
         borderTopWidth: 0,
         borderLeftWidth: 0,
