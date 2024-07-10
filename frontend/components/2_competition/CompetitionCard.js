@@ -14,8 +14,8 @@ export default function CompetitionCard({ uid, pfp, handle, value, rank }) {
                 <Text style={styles.handle_text}>{handle}</Text>
             </View>
             <View style={styles.card_right}>
-                {/* <Text style={styles.stat_text}>{value}lbs</Text> */}
-                {/* <Text style={styles.rank_text}>{getOrdinalString(rank)}</Text> */}
+                <Text style={styles.stat_text}>{value}lbs</Text>
+                <Text style={styles.rank_text}>{getOrdinalString(rank)}</Text>
                 <ArrowDown2 size={20} color="red" style={styles.arrow_icon} />
             </View>
         </View>
@@ -25,9 +25,9 @@ export default function CompetitionCard({ uid, pfp, handle, value, rank }) {
 const styles = StyleSheet.create({
     card_ctnr: {
         height: 65,
-        borderRadius: 15,
-        borderWidth: 0.8,
-        borderColor: '#555',
+        borderRadius: 20,
+        borderWidth: 1.5,
+        borderColor: '#ccc',
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 15,
@@ -38,16 +38,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     pfp_ctnr: {
-        width: 36,
-        height: 36,
+        width: 32,
+        aspectRatio: 1
     },
     pfp: {
         flex: 1,
-        borderRadius: 18
+        borderRadius: 100
     },
     handle_text: {
-        fontFamily: 'Mulish_700Bold',
-        paddingHorizontal: 10
+        fontSize: 15,
+        fontFamily: 'Outfit_500Medium',
+        paddingHorizontal: 10,
+        color: '#333'
     },
     card_right: {
         flexDirection: 'row',
