@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         width: '100%',
-        height: 395,
+        height: 310,
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'flex-end',
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         width: 80,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
-        marginHorizontal: 12,
+        marginHorizontal: 13,
         alignItems: 'center'
     },
     left: {
@@ -81,17 +81,17 @@ const styles = StyleSheet.create({
         backgroundColor: '#ff7e33'
     },
     left_pfp: {
-        width: 54,
+        width: 60,
         aspectRatio: 1,
         borderRadius: 50
     },
     center_pfp: {
-        width: 56,
+        width: 64,
         aspectRatio: 1,
         borderRadius: 50
     },
     right_pfp: {
-        width: 53,
+        width: 56,
         aspectRatio: 1,
         borderRadius: 50
     },
@@ -100,11 +100,11 @@ const styles = StyleSheet.create({
         borderRadius: 50,
     },
     leaderboard_handle_text: {
-        fontFamily: 'Mulish_700Bold',
+        fontFamily: 'Outfit_600SemiBold',
         color: '#fff',
-        paddingTop: 3.5,
+        paddingTop: 4,
         paddingBottom: 10,
-        fontSize: 14
+        fontSize: 15
     },
     bar_text: {
         fontFamily: 'Outfit_800ExtraBold',
