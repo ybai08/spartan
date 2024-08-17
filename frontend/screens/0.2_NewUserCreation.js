@@ -31,7 +31,7 @@ const NewUserCreation = ({ navigation }) => {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={() => {}}>
+        <TouchableWithoutFeedback onPress={() => { }}>
             <View style={styles.container}>
                 <View style={styles.iconContainer}>
                     <RNBounceable onPress={goBack}>
@@ -44,6 +44,16 @@ const NewUserCreation = ({ navigation }) => {
 
                 <View style={styles.formWrapper}>
                     <View style={styles.formContainer}>
+                        <Text style={styles.title}>Create a Username</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Username"
+                            placeholderTextColor="#ccc"
+                            value={username}
+                            onChangeText={setUsername}
+                            autoFocus={true}  // Autofocus on this TextInput
+                        />
+
                         <Text style={styles.title}>Email / Phone Number</Text>
                         <TextInput
                             ref={emailOrPhoneInputRef}
@@ -53,16 +63,6 @@ const NewUserCreation = ({ navigation }) => {
                             value={emailOrPhone}
                             onChangeText={setEmailOrPhone}
                             keyboardType="email-address"
-                            autoFocus={true}  // Autofocus on this TextInput
-                        />
-
-                        <Text style={styles.title}>Create a Username</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Username"
-                            placeholderTextColor="#ccc"
-                            value={username}
-                            onChangeText={setUsername}
                         />
 
                         <Text style={styles.title}>Create a Password</Text>
