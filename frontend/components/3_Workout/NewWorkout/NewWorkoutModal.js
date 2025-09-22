@@ -634,7 +634,7 @@ const NewWorkoutModal = ({
             ) : (
                 isEmptyList ? (
                     // Robust empty state rendered outside the list to avoid FlashList measurement quirks
-                    (<Animated.View style={[styles.scrollview, { opacity: contentDimAnim }]}>
+                    (<Animated.View style={[styles.scrollview, { opacity: contentDimAnim }]}> 
                         <ProgressBanner totalReps={totals.reps} totalVolume={totals.volume} personalBests={totals.PBs} />
                         {viewingSelfEffective && (
                             <>
@@ -650,7 +650,7 @@ const NewWorkoutModal = ({
                     </Animated.View>)
                 ) : (
                     /* Animated FlashList for smoother, low-overhead virtualization */
-                    (<Animated.View style={[styles.listWrap, { opacity: contentDimAnim }]}>
+                    (<Animated.View style={[styles.listWrap, { opacity: contentDimAnim }]}> 
                         <AnimatedFlashList
                             key={`wlist-${cardWid}`}
                             ref={listRef}
@@ -805,7 +805,7 @@ const NewWorkoutModal = ({
                             <View style={styles.reminderContent}>
                                 <Text style={styles.reminderTitle}>Track Reps Honestly</Text>
                                 <Text style={styles.reminderBody}>
-                                    Train for you, not anyone else. Maintain good form. Don't ego lift.{'\n'}Proud of you king 👑
+                                    Train for you, not anyone else. Maintain good form. Don't ego lift.{"\n"}Proud of you king 👑
                                 </Text>
                             </View>
                         </View>
@@ -932,7 +932,7 @@ const styles = StyleSheet.create({
         shadowColor: "#0F172A",
         shadowOpacity: 0.12,
         shadowRadius: scaleSize(24),
-        shadowOffset: { width: 0, height: scaleSize(12) },
+        shadowOffset: { width: 0, height: scaleSize(scaledSize(12)) },
         elevation: 16,
     },
     reminderContainer: {
