@@ -24,11 +24,11 @@ function normaliseHandle(rawHandle) {
   if (!trimmed) return "";
   const withoutAt = trimmed.startsWith("@") ? trimmed.slice(1) : trimmed;
   return withoutAt.trim();
-}
+} 
 
 function toStringSafe(value) {
   if (value === null || value === undefined) return "";
-  return String(value);
+  return String(value); 
 }
 
 function getUidFromEntry(entry) {
