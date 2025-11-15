@@ -85,7 +85,7 @@ function buildEntriesForMembers(valueMap, memberIds) {
 }
 
 async function simulateRefresh() {
-  const usersSnap = await db.collection("users").get();
+  const usersSnap = await db.collection("usersPublic").get();
   if (usersSnap.empty) {
     console.log("simulateRefresh: no users found");
     return;
