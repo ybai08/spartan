@@ -60,3 +60,48 @@
 }
 
 @end
+
+// The iOS 27 SDK requires the UIScene lifecycle. React Native 0.73 still builds its window in
+// application:didFinishLaunchingWithOptions:, so this delegate attaches that window to the scene
+// and forwards URLs and user activities to the app delegate.
+@interface SceneDelegate : UIResponder <UIWindowSceneDelegate>
+@property (nonatomic, strong) UIWindow *window;
+@end
+
+@implementation SceneDelegate
+
+- (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions
+{
+  AppDelegate *appDelegate = (AppDelegate *)UIApplication.sharedApplication.delegate;
+  self.window = appDelegate.window;
+  self.window.windowScene = (UIWindowScene *)scene;
+  [self.window makeKeyAndVisible];
+
+  [self scene:scene openURLContexts:connectionOptions.URLContexts];
+  for (NSUserActivity *userActivity in connectionOptions.userActivities) {
+    [self scene:scene continueUserActivity:userActivity];
+  }
+}
+
+- (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts
+{
+  UIApplication *application = UIApplication.sharedApplication;
+  for (UIOpenURLContext *context in URLContexts) {
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    if (context.options.sourceApplication) {
+      options[UIApplicationOpenURLOptionsSourceApplicationKey] = context.options.sourceApplication;
+    }
+    if (context.options.annotation) {
+      options[UIApplicationOpenURLOptionsAnnotationKey] = context.options.annotation;
+    }
+    [application.delegate application:application openURL:context.URL options:options];
+  }
+}
+
+- (void)scene:(UIScene *)scene continueUserActivity:(NSUserActivity *)userActivity
+{
+  UIApplication *application = UIApplication.sharedApplication;
+  [application.delegate application:application continueUserActivity:userActivity restorationHandler:^(NSArray *restorableObjects) {}];
+}
+
+@end
