@@ -2,7 +2,7 @@
 """
 Crop multi-state exercise illustrations down to a single representative pose.
 
-For each `large.webp` inside `exercises copy/<exercise-name>/`, we identify
+For each `large.webp` inside `assets/exercises/<exercise-name>/`, we identify
 distinct pose panels separated by transparent gutters and keep the pose whose
 center of mass sits lowest in the frame (usually the active/contracted phase).
 The crop keeps a small margin so equipment remains visible but removes the
@@ -21,7 +21,7 @@ from PIL import Image, ImageFile
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-EXERCISES_ROOT = REPO_ROOT / "exercises copy"
+EXERCISES_ROOT = REPO_ROOT / "assets/exercises"
 
 Image.MAX_IMAGE_PIXELS = None
 ImageFile.LOAD_TRUNCATED_IMAGES = True

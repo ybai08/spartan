@@ -71,5 +71,5 @@ functions/
 out/
 web-build/
 
-# NOTE: frontend/assets/exercises/ is very large and intentionally NOT ignored
+# NOTE: assets/exercises/ is very large and intentionally NOT ignored
 # because it is referenced via require() in the app. Excluding it would break builds.

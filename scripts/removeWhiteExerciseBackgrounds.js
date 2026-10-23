@@ -4,16 +4,16 @@ const { PNG } = require('pngjs');
 
 // List of exercise illustration PNGs that currently render with a white matte.
 const exerciseImagePaths = [
-  'exercises copy/tricep-extension-machine/large.png',
-  'exercises copy/hammer-curl-dumbbell/large.png',
-  'exercises copy/overhead-tricep-extension-cable/large.png',
-  'exercises copy/clean-and-jerk-barbell/large.png',
-  'exercises copy/front-raise-band/large.png',
-  'exercises copy/hanging-leg-raise/large.png',
-  'exercises copy/knee-push-up/large.png',
-  'exercises copy/lunge/large.png',
-  'exercises copy/power-clean/large.png',
-  'exercises copy/shoulder-press-dumbbell/large.png',
+  'assets/exercises/tricep-extension-machine/large.png',
+  'assets/exercises/hammer-curl-dumbbell/large.png',
+  'assets/exercises/overhead-tricep-extension-cable/large.png',
+  'assets/exercises/clean-and-jerk-barbell/large.png',
+  'assets/exercises/front-raise-band/large.png',
+  'assets/exercises/hanging-leg-raise/large.png',
+  'assets/exercises/knee-push-up/large.png',
+  'assets/exercises/lunge/large.png',
+  'assets/exercises/power-clean/large.png',
+  'assets/exercises/shoulder-press-dumbbell/large.png',
 ];
 
 const ROOT = path.resolve(__dirname, '..');

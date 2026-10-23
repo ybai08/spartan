@@ -21,6 +21,7 @@ web-build/
 
 # debug
 npm-debug.*
+firebase-debug.log
 yarn-debug.*
 yarn-error.*
 
@@ -29,6 +30,7 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
 .env*.local
 
 # typescript
