@@ -173,21 +173,20 @@ const toDate = (d) => {
     return Number.isNaN(parsed.getTime()) ? null : parsed;
 };
 
+// Returns null when the join date is unknown, so callers can leave the line out.
 const formatJoinDate = (raw) => {
     const date = toDate(raw ?? null);
-    if (!date) return "Joined";
+    if (!date) return null;
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     return `Joined ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 };
 
 export {
-    safeNumber,
     fmtK,
     estimate1RM,
     computeVolume,
     computeTotalReps,
     extractWid,
-    toMillis,
     workoutSortTimestamp,
     ensureWorkoutPrivacy,
     bestTopSet,

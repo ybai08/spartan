@@ -1,5 +1,5 @@
 import { httpsCallable } from 'firebase/functions';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { auth, db, functions } from '../../firebase.config';
 import { emitUserDataUpdate } from '../utils/userDataEvents';
 
@@ -13,7 +13,7 @@ const FUNCTION_NOT_FOUND = 'functions/not-found';
 const HANDLE_REGEX = /^[a-z0-9_.]{6,20}$/;
 const HANDLE_KEYS = ['handle', 'handleLower', 'handle_lower', 'username', 'usernameLower', 'username_lower', 'tag', 'tagLower', 'tag_lower'];
 
-function resolveHandle(...sources) {
+export function resolveHandle(...sources) {
   for (const source of sources) {
     if (!source || typeof source !== 'object') continue;
     for (const key of HANDLE_KEYS) {
@@ -200,12 +200,24 @@ async function setUserHandleFallback(handle) {
   return { handle: normalized };
 }
 
-export async function ensureUserProfile(options = {}) {
-  throw new Error('ensureUserProfile should not be called until username is confirmed.');
-}
+const joinDateBackfillAttempted = new Set();
 
-export async function setUserHandle(handle) {
-  throw new Error('setUserHandle should not be called directly.');
+/**
+ * Some accounts were created without a creation date on their public profile, which leaves
+ * "Joined ..." blank for them and for anyone viewing them. Stamp it once from the sign-in
+ * account's own creation time. `publicData` is the signed-in user's usersPublic record.
+ */
+export async function backfillJoinDate(uid, publicData) {
+  const user = auth.currentUser;
+  if (!uid || !publicData || user?.uid !== uid) return false;
+  if (publicData.createdAt || publicData.joined) return false;
+  if (joinDateBackfillAttempted.has(uid)) return false;
+  joinDateBackfillAttempted.add(uid);
+
+  const createdAt = new Date(user.metadata?.creationTime || '');
+  if (Number.isNaN(createdAt.getTime())) return false;
+  await updateDoc(doc(db, 'usersPublic', uid), { createdAt });
+  return true;
 }
 
 export async function prepareProfileForAuth(options = {}) {

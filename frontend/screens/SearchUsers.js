@@ -14,10 +14,13 @@ import useSuggestedUsersList from '../hooks/useSuggestedUsersList';
 
 const EXTRA_SEARCH_HEADER_GAP = scaleSize(8);
 
+const ItemSeparator = () => <View style={styles.sep} />;
+
 export default function SearchUsers({ navigation, route }) {
   const initialUsers = Array.isArray(route?.params?.initialUsers) ? route.params.initialUsers : [];
   const initialSuggestions = Array.isArray(route?.params?.initialSuggestions) ? route.params.initialSuggestions : [];
-  const navStartedAt = Number(route?.params?.startedAt) || Date.now();
+  // Fixed at mount: a fresh Date.now() per render would re-run the effect that depends on it.
+  const [navStartedAt] = useState(() => Number(route?.params?.startedAt) || Date.now());
   const [qStr, setQStr] = useState('');
   const [results, setResults] = useState([]);
   const [allUsers, setAllUsers] = useState(initialUsers);
@@ -237,9 +240,9 @@ export default function SearchUsers({ navigation, route }) {
         data={qStr ? results : suggestions}
         keyExtractor={(it) => it.uid}
         renderItem={({ item }) => (
-          <ProfileCard user={item} query={qStr} onPress={() => openUser(item)} />
+          <ProfileCard user={item} onPress={() => openUser(item)} />
         )}
-        ItemSeparatorComponent={() => <View style={styles.sep} />}
+        ItemSeparatorComponent={ItemSeparator}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />

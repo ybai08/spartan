@@ -1,17 +1,15 @@
 // components/2_MacroTracking/MealCard.js
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import scaleSize from "../../helper/scaleSize";
 
 export default function MealCard({
     item,
-    PlusIcon,
     COLORS,
-    onAddPress,
     totalCalories = 0,
 }) {
-    const styles = makeStyles(COLORS);
+    const styles = useMemo(() => makeStyles(COLORS), [COLORS]);
 
     return (
         <View style={styles.card}>
@@ -31,14 +29,10 @@ const makeStyles = (COLORS) =>
             backgroundColor: COLORS.card,
             borderRadius: 0,
             paddingVertical: scaleSize(14),
-            paddingLeft: scaleSize(26),
-            paddingRight: scaleSize(26),
+            paddingLeft: scaleSize(18),
+            paddingRight: scaleSize(18),
             marginHorizontal: 0,
-            marginTop: scaleSize(12),
-            borderTopWidth: StyleSheet.hairlineWidth,
-            borderBottomWidth: StyleSheet.hairlineWidth,
-            borderColor: COLORS.hairline,
-            // no shadow for full-width list row look
+            // grouped inside MealsSection's rounded meal card
             shadowOpacity: 0,
             elevation: 0,
         },

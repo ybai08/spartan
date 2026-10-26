@@ -1,4 +1,3 @@
-// screens/Competition.jsx
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
     StyleSheet,
@@ -11,8 +10,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import RNBounceable from "@freakycoder/react-native-bounceable";
+import { useSharedValue } from "react-native-reanimated";
 
-import useStableSafeAreaInsets from "../hooks/useStableSafeAreaInsets";
 import Footer from "../components/Footer";
 import theme from "../theme/mfpDark";
 import { withStrongPress } from "../utils/haptics";
@@ -22,8 +21,7 @@ import {
     ts,
 } from "../components/2_Competition/layoutConstants";
 import UserStatsBottomSheet from "../components/2_Competition/UserStats/UserStatsBottomSheet";
-import { useSharedValue } from "react-native-reanimated";
-import LeaderboardsSection from "../components/2_Competition/sections/LeaderboardsSection";
+// import LeaderboardsSection from "../components/2_Competition/sections/LeaderboardsSection";
 import ProgressSection from "../components/2_Competition/sections/ProgressSection";
 import ExercisesSection from "../components/2_Competition/sections/ExercisesSection";
 import {
@@ -35,7 +33,8 @@ import {
 const VIEW_TABS = [
     { key: "exercises", label: "Ladder" },
     { key: "progress", label: "Progress" },
-    { key: "leaderboard", label: "Compete" },
+    // Compete tab hidden for now; restore this entry, the import and the section below to bring it back.
+    // { key: "leaderboard", label: "Compete" },
 ];
 const resolveTabKey = (candidate) => {
     if (typeof candidate !== "string") return null;
@@ -49,7 +48,6 @@ const getTabIndex = (key) => {
 };
 
 export default function Competition({ navigation, route }) {
-    const insets = useStableSafeAreaInsets();
     const { width: windowWidth = 1 } = useWindowDimensions();
     const isFocused = useIsFocused();
     const [activeTab, setActiveTab] = useState(() => {
@@ -227,15 +225,15 @@ export default function Competition({ navigation, route }) {
 
     const sectionComponents = useMemo(
         () => ({
-            leaderboard: (
-                <LeaderboardsSection
-                    navigation={navigation}
-                    onRequestBodyWeightEntry={handleRequestBodyWeightEntry}
-                    onScroll={handleSectionScroll}
-                    onShowUserStats={handleShowUserStats}
-                    userStatsSheetProgressSV={userStatsSheetProgress}
-                />
-            ),
+            // leaderboard: (
+            //     <LeaderboardsSection
+            //         navigation={navigation}
+            //         onRequestBodyWeightEntry={handleRequestBodyWeightEntry}
+            //         onScroll={handleSectionScroll}
+            //         onShowUserStats={handleShowUserStats}
+            //         userStatsSheetProgressSV={userStatsSheetProgress}
+            //     />
+            // ),
             progress: (
                 <ProgressSection
                     scrollSignal={progressScrollSignal}
@@ -263,12 +261,7 @@ export default function Competition({ navigation, route }) {
     return (
         <SafeAreaView style={styles.mainContainer} edges={["top"]}>
             <View style={styles.tabsWrapper}>
-                <View
-                    style={[
-                        styles.tabsContent,
-                        { paddingTop: 0 },
-                    ]}
-                >
+                <View style={styles.tabsContent}>
                     <View
                         style={[
                             styles.viewTabsContainer,

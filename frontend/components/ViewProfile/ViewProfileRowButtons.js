@@ -1,20 +1,13 @@
 import RNBounceable from "@freakycoder/react-native-bounceable";
 import { useEffect, useRef, useState } from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import followUser from "../../../backend/user/followUser";
 import unfollowUser from "../../../backend/user/unfollowUser";
 import cancelFollowRequest from "../../../backend/user/cancelFollowRequest";
 import theme from "../../theme/mfpDark";
-import scaleSizeGlobal from "../../helper/scaleSize";
+import scaleSizeGlobal, { scaleWidth375 } from "../../helper/scaleSize";
 import { withStrongPress } from "../../utils/haptics";
 import { subscribeUserData } from "../../utils/userDataEvents";
-
-const { width: screenWidth } = Dimensions.get('window');
-const scale = screenWidth / 375; // Base screen width assumed as 375
-
-function scaleSize(size) {
-    return Math.round(size * scale);
-}
 
 export default function ViewProfileRowButtons({ handleOpenViewStats, user, isBlocked = false, onBlockedPress }) {
     const targetIsPrivate = Boolean(
@@ -172,89 +165,78 @@ export default function ViewProfileRowButtons({ handleOpenViewStats, user, isBlo
 
 const styles = StyleSheet.create({
     row: {
-        marginHorizontal: scaleSize(5),
-        marginTop: scaleSize(10),
+        marginTop: scaleWidth375(12),
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        height: scaleSize(32),
+        gap: scaleWidth375(8),
+        height: scaleWidth375(36),
     },
     flex: {
         flex: 1,
     },
     follow_button: {
-        paddingHorizontal: scaleSize(20),
-        borderRadius: scaleSize(10),
+        paddingHorizontal: scaleWidth375(20),
+        borderRadius: scaleWidth375(12),
         backgroundColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: scaleSize(3),
     },
     following_button: {
-        paddingHorizontal: scaleSize(20),
-        borderRadius: scaleSize(10),
+        paddingHorizontal: scaleWidth375(20),
+        borderRadius: scaleWidth375(12),
         backgroundColor: theme.surface,
-        borderWidth: scaleSize(1.2),
+        borderWidth: scaleWidth375(1.2),
         borderColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: scaleSize(3),
     },
     requested_button: {
-        paddingHorizontal: scaleSize(20),
-        borderRadius: scaleSize(10),
+        paddingHorizontal: scaleWidth375(20),
+        borderRadius: scaleWidth375(12),
         backgroundColor: 'rgba(53, 159, 252, 0.12)',
-        borderWidth: scaleSize(1.2),
+        borderWidth: scaleWidth375(1.2),
         borderColor: theme.primary,
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: scaleSize(3),
     },
     view_stats_button: {
-        paddingHorizontal: scaleSize(20),
-        borderRadius: scaleSize(10),
-        backgroundColor: 'rgba(255,255,255,0.18)',
-        borderWidth: scaleSize(1),
-        borderColor: theme.hairline,
+        paddingHorizontal: scaleWidth375(20),
+        borderRadius: scaleWidth375(12),
+        backgroundColor: theme.surface,
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.12)',
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: scaleSize(3),
-        shadowColor: '#000',
-        shadowOpacity: 0.12,
-        shadowRadius: scaleSizeGlobal(6),
-        shadowOffset: { width: 0, height: scaleSizeGlobal(3) },
-        elevation: 2,
     },
     follow_button_text: {
-        fontFamily: 'Poppins_600SemiBold',
-        fontSize: scaleSizeGlobal(12.5),
+        fontFamily: 'Outfit_600SemiBold',
+        fontSize: scaleSizeGlobal(14),
         color: '#fff',
     },
     following_button_text: {
-        fontFamily: 'Poppins_600SemiBold',
-        fontSize: scaleSizeGlobal(12.5),
+        fontFamily: 'Outfit_600SemiBold',
+        fontSize: scaleSizeGlobal(14),
         color: theme.primary,
     },
     requested_button_text: {
-        fontFamily: 'Poppins_600SemiBold',
-        fontSize: scaleSizeGlobal(12.5),
+        fontFamily: 'Outfit_600SemiBold',
+        fontSize: scaleSizeGlobal(14),
         color: theme.primary,
     },
     blocked_button: {
-        paddingHorizontal: scaleSize(20),
-        borderRadius: scaleSize(10),
+        paddingHorizontal: scaleWidth375(20),
+        borderRadius: scaleWidth375(12),
         backgroundColor: '#ef4444',
         justifyContent: 'center',
         alignItems: 'center',
-        marginHorizontal: scaleSize(3),
     },
     blocked_button_text: {
-        fontFamily: 'Poppins_600SemiBold',
-        fontSize: scaleSizeGlobal(12.5),
+        fontFamily: 'Outfit_600SemiBold',
+        fontSize: scaleSizeGlobal(14),
         color: '#FFE4E6',
     },
     view_stats_button_text: {
-        fontFamily: 'Poppins_600SemiBold',
-        fontSize: scaleSizeGlobal(12.5),
+        fontFamily: 'Outfit_600SemiBold',
+        fontSize: scaleSizeGlobal(14),
         color: '#E5E7EB',
     },
 });

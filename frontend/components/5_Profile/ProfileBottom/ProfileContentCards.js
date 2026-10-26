@@ -11,13 +11,6 @@ const formatCount = (value, singular) => {
     return `${safeCount} ${label}`;
 };
 
-const formatWorkoutsCompleted = (value) => {
-    const count = Number.isFinite(value) ? value : Number(value) || 0;
-    const safeCount = count < 0 ? 0 : count;
-    const unit = safeCount === 1 ? 'Workout' : 'Workouts';
-    return `${safeCount} ${unit}`;
-};
-
 const ProfileContentCards = ({
     onPressWorkoutsAndPosts,
     onPressLoggedFoods = () => {},
@@ -26,10 +19,9 @@ const ProfileContentCards = ({
     loggedFoodsCount = 0,
     contentLocked = false,
     lockedSubtitle = '',
-    showLoggedFoodsCard = true,
     loggedFoodsLocked = false,
 }) => {
-    const workoutsCompletedSubtitle = useMemo(() => formatWorkoutsCompleted(workoutsCount), [workoutsCount]);
+    const workoutsCompletedSubtitle = useMemo(() => formatCount(workoutsCount, 'Workout'), [workoutsCount]);
     const postsSubtitle = useMemo(() => formatCount(postsCount, 'Post'), [postsCount]);
     const combinedSubtitle = useMemo(
         () => `${workoutsCompletedSubtitle} • ${postsSubtitle}`,
@@ -60,11 +52,11 @@ const ProfileContentCards = ({
                 onPress={withStrongPress(onPressWorkoutsAndPosts)}
                 style={({ pressed }) => [
                     styles.card,
-                    showLoggedFoodsCard ? styles.cardDivider : styles.lastCard,
+                    styles.cardDivider,
                     pressed && styles.cardPressed
                 ]}
             >
-                <View style={[styles.iconBadge, styles.workoutsBadge]}>
+                <View style={styles.iconBadge}>
                     <Weight size={scaleSize(23)} color="#fff" />
                 </View>
                 <View style={styles.cardTextWrap}>
@@ -79,63 +71,63 @@ const ProfileContentCards = ({
                 />
             </Pressable>
 
-            {showLoggedFoodsCard && (
-                <Pressable
-                    onPress={withStrongPress(onPressLoggedFoods)}
-                    style={({ pressed }) => [
-                        styles.card,
-                        styles.lastCard,
-                        pressed && !loggedFoodsLocked && styles.cardPressed
-                    ]}
-                    disabled={loggedFoodsLocked}
-                >
-                    <View style={[styles.iconBadge, styles.loggedFoodsBadge]}>
-                        <Ionicons name="restaurant-outline" size={scaleSize(20)} color='#fff' />
-                        {loggedFoodsLocked && (
-                            <View style={styles.lockBadge}>
-                                <Ionicons name="lock-closed" size={scaleSize(10)} color="#111827" />
-                            </View>
-                        )}
-                    </View>
-                    <View style={styles.cardTextWrap}>
-                        <Text style={styles.cardTitle}>Logged Food Items</Text>
-                        <Text style={styles.cardSubtitle} numberOfLines={1}>{loggedFoodsSubtitle}</Text>
-                    </View>
-                    {!loggedFoodsLocked && (
-                        <Ionicons
-                            name="chevron-forward"
-                            size={scaleSize(18)}
-                            color="rgba(198, 206, 222, 0.84)"
-                            style={styles.chevron}
-                        />
+            <Pressable
+                onPress={withStrongPress(onPressLoggedFoods)}
+                style={({ pressed }) => [
+                    styles.card,
+                    styles.lastCard,
+                    pressed && !loggedFoodsLocked && styles.cardPressed
+                ]}
+                disabled={loggedFoodsLocked}
+            >
+                <View style={styles.iconBadge}>
+                    <Ionicons name="restaurant-outline" size={scaleSize(20)} color='#fff' />
+                    {loggedFoodsLocked && (
+                        <View style={styles.lockBadge}>
+                            <Ionicons name="lock-closed" size={scaleSize(10)} color="#111827" />
+                        </View>
                     )}
-                </Pressable>
-            )}
+                </View>
+                <View style={styles.cardTextWrap}>
+                    <Text style={styles.cardTitle}>Logged Food Items</Text>
+                    <Text style={styles.cardSubtitle} numberOfLines={1}>{loggedFoodsSubtitle}</Text>
+                </View>
+                {!loggedFoodsLocked && (
+                    <Ionicons
+                        name="chevron-forward"
+                        size={scaleSize(18)}
+                        color="rgba(198, 206, 222, 0.84)"
+                        style={styles.chevron}
+                    />
+                )}
+            </Pressable>
         </View>
     );
 };
 
 const CARD_RADIUS = scaleSize(20);
-const CARD_BACKGROUND = 'transparent';
+const CARD_BACKGROUND = '#17171c';
 const CARD_DIVIDER = 'rgba(255, 255, 255, 0.08)';
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: CARD_BACKGROUND,
-        borderTopWidth: 2,
-        borderBottomWidth: 2,
+        marginHorizontal: scaleSize(14),
+        borderRadius: CARD_RADIUS,
+        borderWidth: 1,
         borderColor: CARD_DIVIDER,
+        overflow: 'hidden',
     },
     card: {
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: scaleSize(15),
-        paddingHorizontal: scaleSize(18),
+        paddingHorizontal: scaleSize(16),
         backgroundColor: 'transparent',
     },
     cardDivider: {
-        borderBottomWidth: 2,
-        borderBottomColor: CARD_DIVIDER,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: 'rgba(162, 162, 162, 0.28)',
     },
     lastCard: {
         borderBottomWidth: 0,
@@ -150,18 +142,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: scaleSize(14),
-        borderWidth: scaleSize(1),
-        // backgroundColor: 'rgba(38, 45, 64, 0.82)',
-        // borderColor: 'rgba(168, 188, 224, 0.28)',
+        backgroundColor: 'rgba(255, 255, 255, 0.07)',
         position: 'relative',
-    },
-    workoutsBadge: {
-        // backgroundColor: 'rgba(108, 152, 252, 0.28)',
-        // borderColor: 'rgba(141, 183, 255, 0.52)',
-    },
-    loggedFoodsBadge: {
-        // backgroundColor: 'rgba(254, 226, 226, 0.28)',
-        // borderColor: 'rgba(254, 215, 170, 0.5)',
     },
     cardTextWrap: {
         flex: 1,

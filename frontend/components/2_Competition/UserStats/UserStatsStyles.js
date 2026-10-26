@@ -1,10 +1,10 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import scaleSize from '../../../helper/scaleSize';
+import THEME from '../../../theme/mfpDark';
 
 const { width: screenWidth } = Dimensions.get('window');
 const scaledSize = (n) => scaleSize(n);
 
-const THEME = require('../../../theme/mfpDark').default;
 const COLORS = {
     bg: THEME.bg,
     card: THEME.surface,
@@ -12,20 +12,11 @@ const COLORS = {
     subtext: THEME.textSecondary,
     accent: THEME.primary,
     hairline: THEME.hairline,
-    iconBg: THEME.field,
-    statBg: THEME.field,
-    statBorder: THEME.hairline,
 };
 
 const HANDLE_FRIEND_ACCENT = '#E0A500';
 const HANDLE_FRIEND_BACKGROUND = '#e0a4002c';
 const GOLD = '#FACC15';
-const GOLD_BG = 'rgba(250, 204, 21, 0.24)';
-const GOLD_BORDER = 'rgba(250, 204, 21, 0.60)';
-const DETAIL_HEADER_GRADIENT = ['#273756', '#101623'];
-const DETAIL_METRIC_GRADIENT = ['rgba(62, 92, 149, 0.42)', 'rgba(18, 25, 38, 0.65)'];
-const SHEET_HANDLE_GRADIENT = ['#303E5B', '#111926'];
-const SHEET_HANDLE_GRADIENT_ACTIVE = ['#47619A', '#1A2438'];
 
 const styles = StyleSheet.create({
     container: {
@@ -51,6 +42,10 @@ const styles = StyleSheet.create({
         paddingTop: scaledSize(8),
         marginBottom: scaledSize(8),
         justifyContent: "space-between",
+    },
+    headerBack: {
+        marginLeft: -scaledSize(10),
+        marginRight: scaledSize(2),
     },
     headerLeft: {
         flexDirection: "row",
@@ -152,22 +147,6 @@ const styles = StyleSheet.create({
         paddingBottom: scaledSize(10),
     },
 
-    // Hexagon wrapper (no card background)
-    hexWrap: {
-        paddingTop: scaledSize(26),
-        alignItems: 'center',
-    },
-    hexDescription: {
-        marginTop: scaledSize(14),
-        marginBottom: scaledSize(28),
-        paddingHorizontal: scaledSize(12),
-        fontSize: scaleSize(12.5),
-        lineHeight: scaleSize(18),
-        fontFamily: "Outfit_400Regular",
-        color: COLORS.subtext,
-        textAlign: 'center',
-    },
-
     exerciseList: {
         marginHorizontal: -scaledSize(17),
     },
@@ -225,16 +204,6 @@ const styles = StyleSheet.create({
         borderTopColor: COLORS.hairline,
     },
     exerciseCardPressed: { backgroundColor: "rgba(255,255,255,0.04)" },
-    accentBar: {
-        position: "absolute",
-        left: 0,
-        top: 0,
-        bottom: 0,
-        // Slightly wider for better visibility without overpowering
-        width: scaledSize(5),
-        borderTopLeftRadius: scaledSize(16),
-        borderBottomLeftRadius: scaledSize(16),
-    },
 
     cardRow: { flexDirection: 'row', alignItems: 'center' },
     cardContentColumn: { flex: 1, minWidth: 0, gap: scaledSize(10) },
@@ -249,10 +218,6 @@ const styles = StyleSheet.create({
         width: scaledSize(28),
         justifyContent: 'center',
         alignItems: 'flex-end'
-    },
-    cardChevronColumnLeft: {
-        alignItems: 'flex-start',
-        marginRight: scaledSize(12),
     },
 
     exerciseName: {
@@ -357,6 +322,13 @@ const styles = StyleSheet.create({
         borderRadius: scaledSize(999),
         backgroundColor: HANDLE_FRIEND_ACCENT,
     },
+    // On a full screen the safe area already clears the status bar and there is no sheet
+    // corner to round, so the overlay drops the sheet's extra top padding and radius.
+    detailOverlayFullScreen: {
+        paddingTop: 0,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+    },
     detailHeaderWrapper: {
         marginBottom: scaledSize(8),
     },
@@ -366,19 +338,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: scaledSize(18),
         paddingVertical: scaledSize(12),
         backgroundColor: 'transparent',
-    },
-    detailHeaderCard: {
-        borderRadius: 0,
-        paddingHorizontal: scaledSize(18),
-        paddingVertical: scaledSize(10),
-        borderWidth: 0,
-        shadowColor: 'transparent',
-        overflow: 'hidden',
-    },
-    detailHeaderTopRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        minHeight: scaledSize(34),
     },
     detailBackButton: {
         width: scaledSize(28),
@@ -411,67 +370,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Outfit_500Medium',
         color: 'rgba(208, 224, 255, 0.65)',
         letterSpacing: 0.32,
-    },
-    detailOneRmPill: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: scaledSize(9),
-        paddingVertical: scaledSize(3),
-        borderRadius: scaledSize(10),
-        backgroundColor: 'rgba(250, 204, 21, 0.12)',
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: 'rgba(250, 204, 21, 0.35)',
-    },
-    detailOneRmLabel: {
-        fontSize: scaleSize(9.5),
-        fontFamily: 'Outfit_600SemiBold',
-        color: '#d6c87a',
-        marginRight: scaledSize(3),
-        letterSpacing: 0.4,
-    },
-    detailOneRmValue: {
-        fontSize: scaleSize(14),
-        fontFamily: 'Nunito_800ExtraBold',
-        color: GOLD,
-    },
-    detailMetricsRow: {
-        flexDirection: 'row',
-        alignItems: 'stretch',
-        marginTop: scaledSize(8),
-        borderRadius: scaledSize(12),
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: 'rgba(115, 189, 255, 0.24)',
-        overflow: 'hidden',
-        backgroundColor: 'rgba(12, 20, 32, 0.6)',
-    },
-    detailMetric: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: scaledSize(6),
-        paddingHorizontal: scaledSize(8),
-        minWidth: 0,
-    },
-    detailMetricLabel: {
-        marginTop: scaledSize(4),
-        fontSize: scaleSize(9),
-        fontFamily: 'Outfit_600SemiBold',
-        color: 'rgba(205, 219, 255, 0.65)',
-        letterSpacing: 0.3,
-        textTransform: 'uppercase',
-    },
-    detailMetricValue: {
-        fontSize: scaleSize(15),
-        fontFamily: 'Outfit_700Bold',
-        color: '#E3EEFF',
-        letterSpacing: 0.12,
-        textShadowColor: 'rgba(15, 24, 38, 0.35)',
-        textShadowOffset: { width: 0, height: scaleSize(1) },
-        textShadowRadius: scaleSize(2),
-    },
-    detailMetricDivider: {
-        width: StyleSheet.hairlineWidth,
-        backgroundColor: 'rgba(110, 184, 255, 0.16)',
     },
     detailEmpty: {
         backgroundColor: COLORS.card,
@@ -515,14 +413,5 @@ export {
     screenWidth,
     HANDLE_FRIEND_ACCENT,
     HANDLE_FRIEND_BACKGROUND,
-    GOLD,
-    GOLD_BG,
-    GOLD_BORDER,
     styles,
-    DETAIL_HEADER_GRADIENT,
-    DETAIL_METRIC_GRADIENT,
-    SHEET_HANDLE_GRADIENT,
-    SHEET_HANDLE_GRADIENT_ACTIVE,
 };
-
-export default styles;

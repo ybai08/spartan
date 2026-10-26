@@ -1,10 +1,10 @@
 // hooks/useRestTimer.js
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Vibration } from "react-native";
+import * as Haptics from "expo-haptics";
 // Lazy import expo-notifications to avoid native crashes on simulators/dev clients
 let ExpoNotifications = null;
 try { ExpoNotifications = require('expo-notifications'); } catch {}
-import * as Haptics from "expo-haptics";
 
 export default function useRestTimer() {
   const [restModalVisible, setRestModalVisible] = useState(false);
@@ -121,7 +121,8 @@ export default function useRestTimer() {
       // Keep same cycle id for add
       if (!restCycleRef.current) restCycleRef.current = Date.now();
       try { global.__restTimerEndAt = endAtRef.current; global.__restTimerTotal = (lastScheduledRemainingRef.current || delta); global.__restCycleId = restCycleRef.current; } catch {}
-      scheduleLocalPush(lastScheduledRemainingRef.current);
+      // Notify when the extended timer ends: the time left from now, not the cumulative total.
+      scheduleLocalPush(Math.max(1, Math.ceil((endAtRef.current - Date.now()) / 1000)));
     }
     setCountdown((s) => s + delta);
   }, [scheduleLocalPush]);
@@ -172,6 +173,5 @@ export default function useRestTimer() {
     startCountdown,
     addCountdown,
     resetCountdown,
-    setCountdown, // expose raw setter if needed
   };
 }

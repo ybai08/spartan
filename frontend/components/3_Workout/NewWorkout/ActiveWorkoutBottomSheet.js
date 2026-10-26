@@ -21,7 +21,6 @@ import { dismissStatKeyboard, isStatKeyboardActive } from "./Tracking/StatKeyboa
 
 const FOOTER_HEIGHT = scaleSize(87);
 const COLLAPSED_PEEK = FOOTER_HEIGHT + scaleSize(48);
-const COLLAPSED_SNAP = COLLAPSED_PEEK;
 const noop = () => { };
 const SHEET_RADIUS = scaleSize(22);
 
@@ -47,7 +46,7 @@ const perfNow = () => {
 const ActiveWorkoutBottomSheet = ({ hideForFocus = false, overlayProgressSV, visibilityProgressSV, isActive = true, collapseProgressSV = null }) => {
     const renderStart = __DEV__ ? perfNow() : null;
     const bottomSheetRef = useRef(null);
-    const snapPoints = useMemo(() => [COLLAPSED_SNAP, "94%"], []);
+    const snapPoints = useMemo(() => [COLLAPSED_PEEK, "94%"], []);
     const [contentKey, setContentKey] = useState(0);
     const [, setIsViewingSelf] = useState(true);
 
@@ -262,6 +261,14 @@ const ActiveWorkoutBottomSheet = ({ hideForFocus = false, overlayProgressSV, vis
         syncToSheetState(WORKOUT_SHEET_STATES.EXPANDED);
     }, [setSheetState, syncToSheetState]);
 
+    // Stable component identity: an inline function here made the sheet remount its handle on every render.
+    const renderHandle = useCallback((props) => (
+        <AnimatedIndexBridge
+            {...props}
+            sharedIndex={sharedAnimatedIndex}
+        />
+    ), [sharedAnimatedIndex]);
+
     const userWorkoutStats = getUserWorkoutStats() || {};
 
     if (!hasWorkout) {
@@ -296,24 +303,15 @@ const ActiveWorkoutBottomSheet = ({ hideForFocus = false, overlayProgressSV, vis
                 enableContentPanningGesture={gesturesEnabled}
                 enableHandlePanningGesture={gesturesEnabled}
                 suppressStickyElements={false}
-                style={[sheetStyle, styles.sheetOffset]}
+                style={sheetStyle}
                 onClose={handleSheetClose}
                 onChange={handleSheetChange}
-                handleComponent={(props) => (
-                    <AnimatedIndexBridge
-                        {...props}
-                        sharedIndex={sharedAnimatedIndex}
-                    />
-                )}
+                handleComponent={renderHandle}
                 handleStyle={{
                     borderTopLeftRadius: SHEET_RADIUS,
                     borderTopRightRadius: SHEET_RADIUS,
                 }}
-                backgroundComponent={(props) => (
-                    <SheetBackground
-                        {...props}
-                    />
-                )}
+                backgroundComponent={SheetBackground}
             >
                 <ActiveWorkoutModal
                     key={`nw-${contentKey}-${String(workout?.wid || "now")}`}
@@ -374,13 +372,6 @@ const SheetBackground = ({ animatedIndex, style }) => {
     );
 };
 
-export default memo(ActiveWorkoutBottomSheet, (prev, next) => (
-    prev.hideForFocus === next.hideForFocus &&
-    prev.overlayProgressSV === next.overlayProgressSV &&
-    prev.visibilityProgressSV === next.visibilityProgressSV &&
-    prev.isActive === next.isActive
-));
-
 const AnimatedIndexBridge = ({ animatedIndex, sharedIndex }) => {
     useDerivedValue(() => {
         sharedIndex.value = animatedIndex.value;
@@ -433,9 +424,6 @@ const styles = StyleSheet.create({
         zIndex: 20,
         elevation: 20,
     },
-    sheetOffset: {
-        // marginBottom: -FOOTER_HEIGHT,
-    },
     sheetBackground: {
         borderTopLeftRadius: SHEET_RADIUS,
         borderTopRightRadius: SHEET_RADIUS,
@@ -455,3 +443,10 @@ const styles = StyleSheet.create({
         borderRadius: scaleSize(2),
     },
 });
+
+export default memo(ActiveWorkoutBottomSheet, (prev, next) => (
+    prev.hideForFocus === next.hideForFocus &&
+    prev.overlayProgressSV === next.overlayProgressSV &&
+    prev.visibilityProgressSV === next.visibilityProgressSV &&
+    prev.isActive === next.isActive
+));

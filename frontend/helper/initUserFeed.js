@@ -1,10 +1,8 @@
-import { getUserMessages } from '../../backend/getUserFeed';
+// import { getUserMessages } from '../../backend/getUserFeed'; // messaging is disabled
 import retrieveUserExploreFeed from '../../backend/retrieveUserExploreFeed';
 import readDoc from '../../backend/helper/firebase/readDoc';
 import FastImage from 'react-native-fast-image';
-import { getMessagesCache, getMessagesPreloadState, hydrateMessagesCache } from '../state/messagesCache';
-
-let userDataRef = { current: null };
+import { getMessagesCache /* , getMessagesPreloadState, hydrateMessagesCache */ } from '../state/messagesCache';
 
 let setMessagesFn, setFooterKeyFn;
 
@@ -27,7 +25,6 @@ export async function initUserFeed(UID) {
         ]);
 
         if (!publicDoc && !privateDoc && !legacyDoc) {
-            console.log('[initUserFeed] profile docs missing; waiting for username completion');
             return;
         }
 
@@ -84,53 +81,51 @@ export async function initUserFeed(UID) {
                     ? legacyData.blockedByUidList
                     : [],
         };
-        userDataRef.current = saneUser;
         try { global.userData = { ...(global.userData || {}), ...saneUser }; } catch {}
 
         // ✅ Load the rest in parallel (no posts here!)
         await Promise.all([
-            initUserMessages(saneUser),
+            // initUserMessages(saneUser), // messaging is disabled
             initExploreFeedImages(saneUser)
         ]);
 
         initWorkoutState(saneUser);
-
-        console.log("✅ Feed data and images initialized (excluding posts).");
     } catch (error) {
         console.error("❌ Error initializing feed:", error);
     }
 }
 
-// 1️⃣ Messages
-async function initUserMessages(userData) {
-    const cached = getMessagesCache();
-    if (cached.length > 0) {
-        if (typeof setMessagesFn === 'function') {
-            setMessagesFn(cached);
-        }
-        return cached;
-    }
+// Messaging is disabled: conversations are no longer loaded with the feed.
+// // 1️⃣ Messages
+// async function initUserMessages(userData) {
+//     const cached = getMessagesCache();
+//     if (cached.length > 0) {
+//         if (typeof setMessagesFn === 'function') {
+//             setMessagesFn(cached);
+//         }
+//         return cached;
+//     }
 
-    const { promise, uid } = getMessagesPreloadState();
-    if (promise && userData?.uid && uid === userData.uid) {
-        try {
-            const preloaded = await promise;
-            if (typeof setMessagesFn === 'function') {
-                setMessagesFn(preloaded);
-            }
-            return preloaded;
-        } catch {
-            // Fall back to manual fetch below
-        }
-    }
+//     const { promise, uid } = getMessagesPreloadState();
+//     if (promise && userData?.uid && uid === userData.uid) {
+//         try {
+//             const preloaded = await promise;
+//             if (typeof setMessagesFn === 'function') {
+//                 setMessagesFn(preloaded);
+//             }
+//             return preloaded;
+//         } catch {
+//             // Fall back to manual fetch below
+//         }
+//     }
 
-    const messages = await getUserMessages(userData);
-    const hydrated = hydrateMessagesCache(messages);
-    if (typeof setMessagesFn === 'function') {
-        setMessagesFn(hydrated);
-    }
-    return hydrated;
-}
+//     const messages = await getUserMessages(userData);
+//     const hydrated = hydrateMessagesCache(messages);
+//     if (typeof setMessagesFn === 'function') {
+//         setMessagesFn(hydrated);
+//     }
+//     return hydrated;
+// }
 
 // 2️⃣ Explore Feed (global.exploreFeedPosts + preload)
 async function initExploreFeedImages(userData) {
